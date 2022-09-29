@@ -62,7 +62,14 @@ Tableau<T>::Tableau(int initcapacite)
 template <class T>
 Tableau<T>::Tableau(const Tableau &autre)
 {
-    // À compléter
+    capacite = autre.capacite;
+    nbElements = autre.nbElements;
+    elements = new T[capacite];
+
+    for (int i = 0; i < nbElements; i++)
+    {
+        elements[i] = autre.elements[i];
+    }
 }
 
 template <class T>
@@ -72,9 +79,9 @@ void Tableau<T>::redimensionner(int nouvCapacite)
     T *tmp = new T[nouvCapacite];
     for (int i = 0; i < nbElements; i++)
     {
-        tmp[i]=elements[i];
+        tmp[i] = elements[i];
     }
-    
+
     delete[] elements;
     elements = tmp;
 }
@@ -89,8 +96,7 @@ Tableau<T>::~Tableau()
 template <class T>
 int Tableau<T>::taille() const
 {
-    // À compléter
-    return 0;
+    return nbElements;
 }
 
 template <class T>
@@ -134,21 +140,39 @@ void Tableau<T>::vider()
 template <class T>
 const T &Tableau<T>::operator[](int index) const
 {
-    assert(index <nbElements);
-    return elements[0];
+    assert(index < nbElements);
+    assert(index >= 0);
+    return elements[index];
 }
 
 template <class T>
 T &Tableau<T>::operator[](int index)
 {
-    // À compléter
-    return elements[0];
+    assert(index < nbElements);
+    assert(index >= 0);
+    return elements[index];
 }
-
+ 
 template <class T>
 Tableau<T> &Tableau<T>::operator=(const Tableau<T> &autre)
 {
-    // À compléter
+    if (this == &autre)
+    {
+        return *this;
+    }
+    nbElements = autre.nbElements;
+    if (capacite < autre.nbElements)
+    {
+        delete[] elements;
+        capacite = autre.capacite;
+        elements = new T[capacite];
+    }
+
+    for (int i = 0; i < nbElements; i++)
+    {
+        elements[i] = autre.elements[i];
+    }
+
     return *this;
 }
 
