@@ -19,6 +19,8 @@ public:
     Tableau(const Tableau &);
     ~Tableau();
 
+    // redimensionner un tablea en doublant sa capacite
+    void redimensionner(int nouvCapacite);
     // Ajouter un element à la fin
     void ajouter(const T &element);
     // Vider le tableau
@@ -33,7 +35,7 @@ public:
     void enlever(int index = 0);
 
     // Cherche et retourne la position de l'élément. Si non trouvé, retourne -1.
-    int chercher(const T &element) const;
+    int chercher(const T &element);
 
     const T &operator[](int index) const;
     T &operator[](int index);
@@ -50,10 +52,11 @@ private:
 // ---------- Définitions -------------
 
 template <class T>
-Tableau<T>::Tableau(int capacite_)
+Tableau<T>::Tableau(int initcapacite)
 {
-    // À compléter
-    elements = new T[1024]; // cette ligne n'est peut-être pas bonne.
+    capacite = initcapacite;
+    nbElements = 0;
+    elements = new T[capacite]; // cette ligne n'est peut-être pas bonne.
 }
 
 template <class T>
@@ -63,9 +66,24 @@ Tableau<T>::Tableau(const Tableau &autre)
 }
 
 template <class T>
+void Tableau<T>::redimensionner(int nouvCapacite)
+{
+    capacite = nouvCapacite;
+    T *tmp = new T[nouvCapacite];
+    for (int i = 0; i < nbElements; i++)
+    {
+        tmp[i]=elements[i];
+    }
+    
+    delete[] elements;
+    elements = tmp;
+}
+
+template <class T>
 Tableau<T>::~Tableau()
 {
-    // À compléter
+    delete[] elements;
+    elements = nullptr;
 }
 
 template <class T>
@@ -78,7 +96,12 @@ int Tableau<T>::taille() const
 template <class T>
 void Tableau<T>::ajouter(const T &item)
 {
-    // À compléter
+    assert(nbElements <= capacite);
+    if (capacite == nbElements)
+    {
+        redimensionner(capacite * 2);
+    }
+    elements[nbElements++] = item;
 }
 
 template <class T>
@@ -111,7 +134,7 @@ void Tableau<T>::vider()
 template <class T>
 const T &Tableau<T>::operator[](int index) const
 {
-    // À compléter
+    assert(index <nbElements);
     return elements[0];
 }
 
