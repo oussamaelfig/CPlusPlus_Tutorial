@@ -113,28 +113,53 @@ void Tableau<T>::ajouter(const T &item)
 template <class T>
 void Tableau<T>::inserer(const T &element, int index)
 {
-    // À compléter
+    // redimensionner
+    if (nbElements == capacite)
+    {
+        redimensionner(capacite * 2);
+    }
+    // decaler
+    for (int i = nbElements; i > index; i--)
+    {
+        elements[i] = elements[i - 1];
+    }
+
+    // ajouter
+    elements[index] = element;
+    nbElements++;
 }
 
 template <class T>
 void Tableau<T>::enlever(int index)
 {
-    // À compléter
+    nbElements--;
+    // decaler
+    for (int i = index; i < nbElements; i++)
+    {
+        elements[i] = elements[i + 1];
+    }
 }
 
 template <class T>
 int Tableau<T>::chercher(const T &element)
 {
-    // À compléter
-    // Voir la fonction Tableau<T>::contient() dans les notes de cours (Section 4.7).
-    // Il suffit de l'adapter pour retourner la position au lieu d'un booléen.
+    for (int i = 0; i < nbElements; i++)
+    {
+        if (elements[i] == element)
+        {
+            return i;
+        }
+    }
+
     return -1;
 }
 
 template <class T>
 void Tableau<T>::vider()
 {
-    // À compléter
+    capacite = 4;
+    nbElements = 0;
+    elements = new T[capacite];
 }
 
 template <class T>
@@ -152,7 +177,7 @@ T &Tableau<T>::operator[](int index)
     assert(index >= 0);
     return elements[index];
 }
- 
+
 template <class T>
 Tableau<T> &Tableau<T>::operator=(const Tableau<T> &autre)
 {
@@ -179,8 +204,24 @@ Tableau<T> &Tableau<T>::operator=(const Tableau<T> &autre)
 template <class T>
 bool Tableau<T>::operator==(const Tableau<T> &autre) const
 {
-    // À compléter
-    return false;
+    // if t1==t2
+    if (this == &autre)
+    {
+        return true;
+    }
+    if (nbElements != autre.nbElements)
+    {
+        return false;
+    }
+    for (int i = 0; i < nbElements; i++)
+    {
+        if (elements[i] != autre.elements[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 #endif // define _TABLEAU___H_
