@@ -1,5 +1,6 @@
 #include <assert.h>
 #include "point.h"
+#include <math.h>
 
 Point::Point(double _x, double _y)
   : x(_x), y(_y){
@@ -10,7 +11,9 @@ Point::Point(const Point& point)
 Point::~Point(){
 }
 double Point::distance(const Point& point) const {
-  // TODO
+  return sqrt(
+    pow(point.x-this->x,2)+pow(point.y-this->y,2)
+  );
   return 0;
 }
 std::ostream& operator << (std::ostream& os, const Point& point) {
